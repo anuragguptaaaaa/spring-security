@@ -1,18 +1,34 @@
 package com.security.security_test_2.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 
 @Entity
 public class Users {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(nullable = true, length = 255)
     private String name;
+
+    @Column(nullable = true, length = 255)
     private String password;
+
+    @Column(nullable = true, length = 255, unique = true)
     private String email;
+
+    @Column(nullable = true, length = 255)
     private String phone;
+
+    @Column(nullable = true, length = 255)
     private String role;
 
+    // Constructor with all fields
     public Users(Integer id, String name, String password, String email, String phone, String role) {
         this.id = id;
         this.name = name;
@@ -22,10 +38,10 @@ public class Users {
         this.role = role;
     }
 
-    public Users() {
+    // Default constructor
+    public Users() {}
 
-    }
-
+    // Getters and Setters
     public Integer getId() {
         return id;
     }
@@ -73,5 +89,4 @@ public class Users {
     public void setRole(String role) {
         this.role = role;
     }
-
 }
