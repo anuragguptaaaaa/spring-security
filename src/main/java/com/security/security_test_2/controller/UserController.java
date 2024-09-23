@@ -3,6 +3,7 @@ package com.security.security_test_2.controller;
 import com.security.security_test_2.model.Users;
 import com.security.security_test_2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +13,10 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Users> getAllUsers() {
         return userService.getAllUsers();
     }

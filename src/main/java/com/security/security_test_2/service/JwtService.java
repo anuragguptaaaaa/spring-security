@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -32,10 +33,12 @@ public class JwtService {
         }
     }
 
-    public String generateToken(String username) {
-        Map<String, Object> claims = new HashMap<String, Object>();
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = Map.of("roles", userDetails.getAuthorities().stream()
+                .map(authority -> "ROLE_" + authority.getAuthority())  // Prefix roles with 'ROLE_'
+                .collect(Collectors.toList()));
 
-        return Jwts.builder().claims().add(claims).subject(username).issuedAt(new Date(System.currentTimeMillis())).expiration(new Date(System.currentTimeMillis()+60*60*30)).and().signWith(getKey()).compact();
+        return Jwts.builder().claims().add(claims).subject(userDetails.getUsername()).issuedAt(new Date(System.currentTimeMillis())).expiration(new Date(System.currentTimeMillis()+60*60*30)).and().signWith(getKey()).compact();
     }
     private SecretKey getKey(){
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
