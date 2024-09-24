@@ -52,6 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
             UserDetails userDetails = context.getBean(MyUserDetailsService.class).loadUserByUsername(username);
 
             // Validate the token
+
             if (jwtService.validateToken(token, userDetails)) {
 
                 List<String> roles = (List<String>) jwtService.extractClaim(token, claims -> claims.get("roles"));
